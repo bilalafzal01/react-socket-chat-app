@@ -18,6 +18,11 @@
   align-items: center;
 }
 
+.activeItem:hover {
+  cursor: pointer;
+  color: #eeebdd;
+}
+
 .activeContainer img {
   padding-left: 10px;
 }

@@ -51,6 +51,10 @@
   justify-content: flex-end;
 }
 
+.justifyCenter {
+  justify-content: center;
+}
+
 .colorWhite {
   color: white;
 }
@@ -59,10 +63,26 @@
   color: #353535;
 }
 
+.colorInfo {
+  color: #272b41;
+  font-weight: 500;
+}
+
 .backgroundBlue {
   background: #810000;
 }
 
 .backgroundLight {
   background: #F3F3F3;
+}
+
+.backgroundDM {
+  background: #a3ddcb;
+  font-style: italic;
+}
+
+.backgroundGreen {
+  background: #ff4646;
+  font-style: italic;
+
 }

@@ -1,6 +1,28 @@
 .form {
   display: flex;
-  border-top: 2px solid #D3D3D3;
+  flex-direction: column;
+}
+
+.formDiv {
+  display: flex;
+}
+
+.formInfo {
+  font-size: 1.125rem;
+  padding: 0.5rem 1rem;
+  background: rgba(105, 10, 10, 0.774);
+  color: #eee;
+  display: flex;
+  justify-content: space-between;
+}
+
+.formInfo>button {
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .input {
@@ -19,7 +41,6 @@ select:focus {
 
 .sendButton {
   color: #fff !important;
-  text-transform: uppercase;
   text-decoration: none;
   background: #630000;
   padding: 20px;

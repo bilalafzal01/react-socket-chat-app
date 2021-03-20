@@ -34,11 +34,13 @@ io.on("connect", (socket) => {
     socket.emit("message", {
       user: "Admin",
       text: `${user.name}, welcome to room ${user.room}.`,
+      type: `info`,
     });
 
     socket.broadcast.to(user.room).emit("message", {
       user: "Admin",
       text: `${user.name} has joined the chat!`,
+      type: `info`,
     });
 
     io.to(user.room).emit("roomData", {
@@ -52,7 +54,28 @@ io.on("connect", (socket) => {
   // send message
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
-    io.to(user.room).emit("message", { user: user.name, text: message });
+    io.to(user.room).emit("message", {
+      user: user.name,
+      text: message,
+      type: `chat`,
+    });
+    callback();
+  });
+
+  socket.on("sendMessageToUser", (data, callback) => {
+    const user = getUser(socket.id);
+    const friend = getUser(data.friend);
+    console.log(friend);
+    io.to(friend.id).emit("message", {
+      user: user.name,
+      text: data.message,
+      type: `DM`,
+    });
+    io.to(socket.id).emit("message", {
+      user: user.name,
+      text: data.message,
+      type: `DM`,
+    });
     callback();
   });
 
@@ -63,6 +86,7 @@ io.on("connect", (socket) => {
       io.to(user.room).emit("message", {
         user: "Admin",
         text: `${user.name} has left the chat.`,
+        type: `info`,
       });
       io.to(user.room).emit("roomData", {
         room: user.room,

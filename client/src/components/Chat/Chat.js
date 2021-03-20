@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 
 import "./Chat.css";
 import { TextContainer, Messages, InfoBar, Input } from "../index";
+import { useStateValue } from "../../StateProvider";
 const ENDPOINT = "http://localhost:5000/";
 
 let socket;
@@ -17,12 +18,16 @@ function Chat({ location }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
+  const [state, dispatch] = useStateValue();
+
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
     socket = io(ENDPOINT);
 
     setRoom(room);
     setName(name);
+
+    document.title = `BilolChatApp - User: ${name}`;
 
     socket.emit("join", { name, room }, (err) => {
       if (err) {
@@ -49,6 +54,27 @@ function Chat({ location }) {
     }
   };
 
+  const sendMessageToAFriend = (e) => {
+    e.preventDefault();
+
+    if (message && state.friend.id) {
+      socket.emit(
+        "sendMessageToUser",
+        {
+          friend: state.friend.id,
+          message: message,
+        },
+        () => {
+          setMessage("");
+          dispatch({
+            type: "SET_FRIEND",
+            payload: null,
+          });
+        }
+      );
+    }
+  };
+
   return (
     <div className="outerContainer">
       <div className="container">
@@ -58,9 +84,10 @@ function Chat({ location }) {
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
+          sendMessageToAFriend={sendMessageToAFriend}
         />
       </div>
-      <TextContainer users={users} />
+      <TextContainer users={users} location={location} />
     </div>
   );
 }
